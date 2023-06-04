@@ -1,7 +1,10 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-const { readFromFile, readAndAppend } = require("./fsUtils.js");
+const {
+  readFromFile,
+  readAndAppend,
+} = require("./public/assets/js/fsUtils.js");
 
 const PORT = 3001;
 const app = express();
@@ -24,7 +27,23 @@ app.get("/api/notes", (req, res) => {
   readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)));
 });
 
-app.post
+app.post("/api/notes", (req, res) => {
+  console.info(`${req.method} request received to add a tip`);
+
+  const { title, text } = req.body;
+
+  if (req.body) {
+    const newTip = {
+      title,
+      text,
+    };
+
+    readAndAppend(newTip, "./db/db.json");
+    res.json(`Tip added successfully 🚀`);
+  } else {
+    res.error("Error in adding tip");
+  }
+});
 
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT} 🚀`)
