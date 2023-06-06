@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const { v4: uuidv4 } = require("uuid");
 const {
   readFromFile,
   readAndAppend,
@@ -35,6 +36,7 @@ app.post("/api/notes", (req, res) => {
     const newTip = {
       title,
       text,
+      id: uuidv4()
     };
 
     readAndAppend(newTip, "./db/db.json");
